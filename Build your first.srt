@@ -1,0 +1,23 @@
+1
+00:00:00,800 --> 00:00:01,120
+[Speaker A] Hello.
+
+2
+00:00:01,160 --> 00:00:02,056
+[Speaker B] I am Abdul.
+
+3
+00:00:02,088 --> 00:00:03,992
+[Speaker A] Mukhtadir, a student of.
+
+4
+00:00:04,016 --> 00:00:04,860
+[Speaker B] Mgit.
+
+5
+00:00:06,480 --> 00:00:07,320
+[Speaker A] Majoring in.
+
+6
+00:00:07,360 --> 00:00:08,080
+[Speaker B] Information Technology.
