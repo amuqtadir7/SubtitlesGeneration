@@ -41,9 +41,9 @@ git clone https://github.com/amuqtadir7/SubtitlesGeneration
 ├── uploads/
 ├── downloads/
 
+
+
 🧪 Sample Output
-
-
 https://github.com/user-attachments/assets/957754da-c46b-4358-90d2-4ed89b6f25f1
 
 
