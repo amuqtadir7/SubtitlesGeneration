@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Subtitle Translator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --danger: #f72585;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7ff;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .logo span {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    .error {
+      color: var(--danger);
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+
+    input[type="file"],
+    input[type="url"],
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e9ecef;
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      background: white;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    button[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .input-switcher {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .input-switcher button {
+      flex: 1;
+      padding: 0.75rem;
+      background-color: #e9ecef;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .input-switcher button.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <span>Subtitle Translator</span>
+    </div>
+    <h1>AI Video & YouTube Subtitle Translator</h1>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      <div class="input-switcher">
+        <button type="button" class="active" onclick="showInput('url', event)">YouTube URL</button>
+        <button type="button" onclick="showInput('file', event)">Upload File</button>
+      </div>
+
+      <div id="url-input">
+        <div class="form-group">
+          <label for="video_url">YouTube URL:</label>
+          <input type="url" name="video_url" placeholder="https://youtube.com/watch?v=..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="quality">Video Quality:</label>
+          <select name="quality">
+            <option value="best">Best Quality</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+            <option value="360">360p</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="file-input" class="hidden">
+        <div class="form-group">
+          <label for="video_file">Upload Video:</label>
+          <input type="file" name="video_file" accept="video/*">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="language">Target Language:</label>
+        <select name="language">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="te">Telugu</option>
+          <option value="ta">Tamil</option>
+          <option value="bn">Bengali</option>
+          <option value="mr">Marathi</option>
+          <option value="mr">Arabic</option>
+        </select>
+      </div>
+
+      <button type="submit">Generate Subtitles</button>
+    </form>
+  </div>
+
+  <script>
+    function showInput(type, event) {
+      document.querySelectorAll('.input-switcher button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      const urlInput = document.getElementById('url-input');
+      const fileInput = document.getElementById('file-input');
+      const fileField = document.querySelector('[name="video_file"]');
+      const urlField = document.querySelector('[name="video_url"]');
+
+      if (type === 'url') {
+        urlInput.classList.remove('hidden');
+        fileInput.classList.add('hidden');
+        fileField.removeAttribute('required');
+        urlField.setAttribute('required', '');
+      } else {
+        fileInput.classList.remove('hidden');
+        urlInput.classList.add('hidden');
+        urlField.removeAttribute('required');
+        fileField.setAttribute('required', '');
+      }
+    }
+  </script>
+</body>
+</html>
